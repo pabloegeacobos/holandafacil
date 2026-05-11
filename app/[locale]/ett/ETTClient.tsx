@@ -572,11 +572,19 @@ export default function ETTClient({
               <p style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', margin: 0 }}>{t('b2b_desc')}</p>
             </div>
             <a
-              href={`mailto:hola@holandafacil.com?subject=Reclamar perfil ETT`}
+              href={`mailto:holandafacil.info@gmail.com?subject=Reclamar perfil ETT`}
               style={{ color: '#f97316', fontSize: '0.82rem', fontWeight: 700, textDecoration: 'none', whiteSpace: 'nowrap' }}
             >
               {t('b2b_cta')}
             </a>
+          </div>
+
+          {/* Contacto discreto */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '10px 0', marginBottom: 24, borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+            <span style={{ color: 'var(--text-dim)', fontSize: '0.78rem' }}>¿Tienes una sugerencia o has detectado algo incorrecto?</span>
+            <Link href={`/${locale}/contacto`} style={{ color: 'var(--text-subtle)', fontSize: '0.78rem', fontWeight: 600, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0 }}>
+              Escríbenos →
+            </Link>
           </div>
 
           {/* Review form */}
@@ -885,7 +893,7 @@ export default function ETTClient({
               Gestiona tu reputación entre los trabajadores hispanohablantes en Países Bajos.
             </p>
             <a
-              href="mailto:hola@holandafacil.com"
+              href="mailto:holandafacil.info@gmail.com"
               style={{ display: 'inline-block', background: 'none', border: '1px solid #f97316', color: '#f97316', borderRadius: 8, padding: '7px 16px', fontSize: '0.78rem', fontWeight: 700, textDecoration: 'none' }}
             >
               Solicitar información →

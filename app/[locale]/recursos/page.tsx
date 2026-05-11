@@ -184,10 +184,10 @@ export default function RecursosPage({
             ¿Echas en falta algún recurso? Escríbenos.
           </p>
           <a
-            href="mailto:hola@holandafacil.com"
+            href="mailto:holandafacil.info@gmail.com"
             style={{ color: '#f97316', fontWeight: 700, fontSize: '0.85rem', textDecoration: 'none' }}
           >
-            hola@holandafacil.com →
+            holandafacil.info@gmail.com →
           </a>
         </div>
 

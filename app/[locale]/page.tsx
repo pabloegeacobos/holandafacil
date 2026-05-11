@@ -86,7 +86,7 @@ export default async function LandingPage({
         '@id': `${BASE}/#organization`,
         name: 'HolandaFácil',
         url: BASE,
-        email: 'hola@holandafacil.com',
+        email: 'holandafacil.info@gmail.com',
         description: 'Plataforma para hispanos que viven o quieren vivir en los Países Bajos.',
         logo: { '@type': 'ImageObject', url: `${BASE}/logo.png` },
         sameAs: [],
@@ -317,8 +317,8 @@ export default async function LandingPage({
           <Link href={`/${locale}/guias`} style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Guías</Link>
           <Link href={`/${locale}/ett`} style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>ETTs</Link>
           <Link href={`/${locale}/empresas`} style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Para empresas</Link>
-          <a href="mailto:hola@holandafacil.com" style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Contacto</a>
-          <a href="mailto:hola@holandafacil.com" style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Política de privacidad</a>
+          <Link href={`/${locale}/contacto`} style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Contacto</Link>
+          <a href="mailto:holandafacil.info@gmail.com" style={{ color: 'var(--text-dim)', fontSize: '0.78rem', textDecoration: 'none' }}>Política de privacidad</a>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 20, marginTop: 8, flexWrap: 'wrap' }}>
           <span style={{ color: 'var(--text-faint)', fontSize: '0.7rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Ciudades</span>

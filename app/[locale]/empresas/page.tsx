@@ -142,7 +142,7 @@ export default async function EmpresasPage({
           <EmpresasForm />
           <p style={{ color: 'var(--text-dim)', fontSize: '0.72rem', marginTop: 16 }}>
             O escríbenos directamente a{' '}
-            <a href="mailto:hola@holandafacil.com" style={{ color: '#f97316' }}>hola@holandafacil.com</a>
+            <a href="mailto:holandafacil.info@gmail.com" style={{ color: '#f97316' }}>holandafacil.info@gmail.com</a>
           </p>
         </div>
       </section>
