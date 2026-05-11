@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { routing } from '@/i18n/routing'
 import Nav from '@/components/Nav'
+import Footer from '@/components/Footer'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 
 const syne = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'], variable: '--font-syne' })
@@ -31,6 +32,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <Nav locale={locale} />
           {children}
+          <Footer locale={locale} />
         </NextIntlClientProvider>
       </body>
     </html>
