@@ -110,10 +110,7 @@ export default async function LandingPage({
           <p style={{ color: 'var(--text-muted)', fontSize: 'clamp(1rem, 2.5vw, 1.15rem)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 12px' }}>
             {t('hero_subtitle')}
           </p>
-          <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '0.93rem', fontStyle: 'italic', margin: '0 auto 32px', maxWidth: 540 }}>
-            «Todo lo que necesitas para instalarte y trabajar en Países Bajos. En español. Hecho por alguien que pasó por lo mismo.»
-          </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'flex-start' }}>
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center', alignItems: 'flex-start' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
               <Link
                 href={`/${locale}/registro`}
