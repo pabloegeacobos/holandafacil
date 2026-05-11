@@ -10,7 +10,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   return {
-    title: 'Contacto — HolandaFácil',
+    title: 'Contacto',
     description: 'Escríbenos para sugerencias, incidencias o colaboraciones.',
     alternates: {
       canonical: `${BASE}/${locale}/contacto`,
