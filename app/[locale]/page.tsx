@@ -1,7 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import WaitlistForm from '@/components/WaitlistForm'
 import { createClient } from '@/lib/supabase/server'
 import { guides } from '@/content/guias'
 
@@ -174,7 +173,12 @@ export default async function LandingPage({
             <div style={{ fontSize: '2.5rem', marginBottom: 16 }}>🤝</div>
             <h2 style={{ color: '#2dd4bf', fontSize: '1.15rem', fontWeight: 800, marginBottom: 8 }}>{t('comunidad_capture_title')}</h2>
             <p style={{ color: 'var(--text-subtle)', fontSize: '0.875rem', lineHeight: 1.7, marginBottom: 20 }}>{t('comunidad_capture_subtitle')}</p>
-            <WaitlistForm locale={locale} />
+            <Link
+              href={`/${locale}/registro`}
+              style={{ color: '#f97316', fontSize: '0.875rem', fontWeight: 700, textDecoration: 'none' }}
+            >
+              {t('cta_registro')} →
+            </Link>
           </div>
         </div>
       </section>
