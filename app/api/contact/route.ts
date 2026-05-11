@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { adminSupabase } from '@/lib/supabase/admin'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const VALID_ASUNTOS = ['sugerencia', 'incidencia', 'colaboracion', 'otro']
@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     ) {
       return NextResponse.json({ error: 'datos incompletos' }, { status: 400 })
     }
-    const supabase = await createClient()
+    const supabase = adminSupabase()
     const { error } = await supabase.from('contact_messages').insert({
       nombre: String(nombre).trim().slice(0, 100),
       email: cleanEmail,
