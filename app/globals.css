@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0a0f;
+  --bg-card: #111118;
+  --bg-input: #0a0a0f;
+  --border: #1e1e2e;
+  --border-subtle: #1e2a3a;
+  --text: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-subtle: #475569;
+  --text-dim: #334155;
+  --text-faint: #1e2a3a;
+  --teal: #2dd4bf;
+  --orange: #f97316;
+  --violet: #a78bfa;
+}
+
+html[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-input: #f1f5f9;
+  --border: #e2e8f0;
+  --border-subtle: #cbd5e1;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-subtle: #334155;
+  --text-dim: #94a3b8;
+  --text-faint: #e2e8f0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+h1, h2 {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+*:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Nav */
+.nav-bg {
+  background: rgba(17, 17, 24, 0.92);
+  backdrop-filter: blur(8px);
+}
+html[data-theme="light"] .nav-bg {
+  background: rgba(248, 250, 252, 0.92);
+}
+
+.nav-center-links { display: block; }
+.nav-login-link { display: inline; }
+
+/* Layouts */
+.layout-with-sidebar {
+  display: grid;
+  grid-template-columns: 1fr min(280px, 100%);
+  gap: 32px;
+}
+
+.form-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ETT grid */
+.ett-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+/* Expand/collapse animation */
+.ett-reviews-panel {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  max-height: 0;
+  opacity: 0;
+}
+.ett-reviews-panel.open {
+  max-height: 3000px;
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .ett-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .nav-center-links { display: none; }
+  .nav-login-link { display: none; }
+  .layout-with-sidebar { grid-template-columns: 1fr; }
+  .form-grid-2col { grid-template-columns: 1fr; }
+  .ett-grid { grid-template-columns: 1fr; }
+}

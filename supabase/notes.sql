@@ -1,0 +1,135 @@
+-- Tablas existentes en Supabase (proyecto compartido con ETTWatch):
+-- - agencies (id, name, city, avg_rating, total_reviews)
+-- - reviews (id, agency_id, agency_name, rating, flags, comment, nationality, sector, submitted_by, created_at)
+-- - profiles (id, full_name, phone, city, country_origin, languages, created_at)
+--
+-- La tabla reviews.submitted_by acepta NULL para reviews anónimas.
+-- Si hay una restricción NOT NULL en submitted_by, ejecuta:
+--   ALTER TABLE reviews ALTER COLUMN submitted_by DROP NOT NULL;
+--
+-- Para la función de avg_rating automática en agencies, ETTWatch ya tiene el trigger.
+-- No es necesario recrearlo.
+--
+-- Tabla para el Tablón de anuncios:
+--
+-- CREATE TABLE classifieds (
+--   id             UUID         DEFAULT gen_random_uuid() PRIMARY KEY,
+--   category_slug  TEXT         NOT NULL CHECK (category_slug IN ('viajes','paquetes','compraventa','pisos','servicios')),
+--   title          TEXT         NOT NULL,
+--   description    TEXT,
+--   city           TEXT,
+--   contact        TEXT         NOT NULL,
+--   direction      TEXT         CHECK (direction IN ('es_to_nl','nl_to_es')),
+--   date_available DATE,
+--   user_id        UUID         REFERENCES auth.users(id) ON DELETE SET NULL,
+--   is_active      BOOLEAN      DEFAULT true,
+--   created_at     TIMESTAMPTZ  DEFAULT NOW(),
+--   expires_at     TIMESTAMPTZ  DEFAULT (NOW() + INTERVAL '30 days')
+-- );
+--
+-- ALTER TABLE classifieds ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Public read active" ON classifieds FOR SELECT USING (is_active = true AND expires_at > NOW());
+-- CREATE POLICY "Anyone can insert"  ON classifieds FOR INSERT WITH CHECK (true);
+--
+-- =====================================================================
+-- SPRINT 1 — Mayo 2026 — Nuevas tablas y columnas (brief estratégico)
+-- =====================================================================
+--
+-- 1. Añadir tier y reclamado a agencies:
+--
+-- ALTER TABLE agencies ADD COLUMN IF NOT EXISTS tier INTEGER DEFAULT 0;
+-- ALTER TABLE agencies ADD COLUMN IF NOT EXISTS reclamado BOOLEAN DEFAULT false;
+--
+-- 2. Tabla waitlist (captura de emails para comunidad y guías):
+--
+-- CREATE TABLE waitlist (
+--   id             UUID         DEFAULT gen_random_uuid() PRIMARY KEY,
+--   email          TEXT         UNIQUE NOT NULL,
+--   fuente         TEXT         DEFAULT 'directa',
+--   fecha_registro TIMESTAMPTZ  DEFAULT NOW()
+-- );
+-- ALTER TABLE waitlist ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Anyone can insert" ON waitlist FOR INSERT WITH CHECK (true);
+--
+-- 3. Tabla b2b_leads (formulario /empresas):
+--
+-- CREATE TABLE b2b_leads (
+--   id            UUID         DEFAULT gen_random_uuid() PRIMARY KEY,
+--   nombre        TEXT         NOT NULL,
+--   empresa       TEXT         NOT NULL,
+--   email         TEXT         NOT NULL,
+--   tipo_interes  TEXT,
+--   fecha         TIMESTAMPTZ  DEFAULT NOW(),
+--   estado        TEXT         DEFAULT 'nuevo'
+-- );
+-- ALTER TABLE b2b_leads ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Anon can insert" ON b2b_leads FOR INSERT WITH CHECK (true);
+-- (Solo service_role puede leer leads — no añadir SELECT policy pública)
+--
+-- =====================================================================
+-- SPRINT 1b — Columnas adicionales en reviews (campos del formulario)
+-- =====================================================================
+--
+-- ALTER TABLE reviews ADD COLUMN IF NOT EXISTS would_work_again TEXT CHECK (would_work_again IN ('yes', 'no', 'maybe'));
+-- ALTER TABLE reviews ADD COLUMN IF NOT EXISTS duration TEXT CHECK (duration IN ('less_1m', '1_3m', '3_6m', 'more_6m'));
+-- ALTER TABLE reviews ADD COLUMN IF NOT EXISTS email_verify TEXT;
+--
+-- =====================================================================
+-- MISIONES — 1 año de Premium gratis al completar las 3 misiones
+-- =====================================================================
+--
+-- 1. Código de referido único por usuario (en profiles):
+--
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS referral_code TEXT UNIQUE;
+--
+-- 2. Tabla de referidos (registros reales via link de referido):
+--
+-- CREATE TABLE referrals (
+--   id          UUID         DEFAULT gen_random_uuid() PRIMARY KEY,
+--   referrer_id UUID         REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+--   referred_id UUID         REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL UNIQUE,
+--   created_at  TIMESTAMPTZ  DEFAULT NOW()
+-- );
+-- ALTER TABLE referrals ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Referrer reads own" ON referrals FOR SELECT USING (referrer_id = auth.uid());
+-- CREATE INDEX referrals_referrer_id_idx ON referrals(referrer_id);
+--
+-- 3. Sugerencias de mejora de la plataforma:
+--
+-- CREATE TABLE suggestions (
+--   id         UUID         DEFAULT gen_random_uuid() PRIMARY KEY,
+--   user_id    UUID         REFERENCES auth.users(id) ON DELETE SET NULL,
+--   content    TEXT         NOT NULL CHECK (char_length(content) >= 10),
+--   created_at TIMESTAMPTZ  DEFAULT NOW()
+-- );
+-- ALTER TABLE suggestions ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "Auth insert" ON suggestions FOR INSERT WITH CHECK (auth.uid() IS NOT NULL);
+--
+-- 4. Registro de premios (usuarios que completaron las 3 misiones):
+--
+-- CREATE TABLE premium_rewards (
+--   user_id      UUID         REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+--   earned_at    TIMESTAMPTZ  DEFAULT NOW(),
+--   activated    BOOLEAN      DEFAULT false,
+--   activated_at TIMESTAMPTZ
+-- );
+-- ALTER TABLE premium_rewards ENABLE ROW LEVEL SECURITY;
+-- CREATE POLICY "User reads own" ON premium_rewards FOR SELECT USING (user_id = auth.uid());
+--
+-- =====================================================================
+-- SPRINT 2 — Directorio ETT desde fuentes oficiales
+-- =====================================================================
+--
+-- 1. Columnas nuevas en agencies para datos oficiales:
+--
+-- ALTER TABLE agencies ADD COLUMN IF NOT EXISTS kvk TEXT UNIQUE;
+-- ALTER TABLE agencies ADD COLUMN IF NOT EXISTS certifications TEXT[] DEFAULT '{}';
+--
+-- certifications: array con valores 'SNA', 'ABU', 'NBBU' (cualquier combinación)
+-- kvk: número KvK de 8 dígitos (clave de deduplicación entre fuentes)
+--
+-- 2. Ejecutar el seed generado por scripts/seed-agencies.mjs:
+--    Ver: supabase/seed-agencies.sql (generado al correr el script)
+--
+-- 3. Actualizar el trigger avg_rating para que no sobreescriba kvk/certifications:
+--    (el trigger existente sólo actualiza avg_rating y total_reviews, sin cambios necesarios)
