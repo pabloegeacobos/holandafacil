@@ -117,6 +117,16 @@
 -- CREATE POLICY "User reads own" ON premium_rewards FOR SELECT USING (user_id = auth.uid());
 --
 -- =====================================================================
+-- BSN voluntario en profiles (verificación anti-cuentas falsas)
+-- =====================================================================
+--
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bsn TEXT;
+--
+-- El campo se valida con el elfproef (11-check) antes de guardar.
+-- Nunca se devuelve en queries públicas — solo el propio usuario lo ve en su perfil.
+-- No añadir SELECT policy pública que incluya esta columna.
+--
+-- =====================================================================
 -- SPRINT 2 — Directorio ETT desde fuentes oficiales
 -- =====================================================================
 --
