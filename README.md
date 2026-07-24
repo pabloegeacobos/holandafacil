@@ -20,10 +20,6 @@ decisions before accepting a job offer.
 - **Staffing agency (ETT) directory & reviews** — browse agencies sourced
   from official ABU/SNA-certified registries, with community-submitted
   ratings covering pay accuracy, overtime, housing, and contract honesty.
-- **Optional BSN identity verification** — users can voluntarily verify
-  their Dutch citizen service number (validated with the official 11-check
-  checksum) to signal that a review comes from a real person, without ever
-  exposing the number publicly.
 - **Community classifieds board** (*Tablón*) — post and browse listings
   (housing, services, travel, buy/sell) between Spain/LatAm and the
   Netherlands.

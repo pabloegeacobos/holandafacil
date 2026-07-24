@@ -17,15 +17,7 @@ type Profile = {
   lives_in_nl: string | null
   ett_names: string | null
   working_with_ett: string | null
-  bsn: string | null
 } | null
-
-function isValidBsn(bsn: string): boolean {
-  if (!/^\d{9}$/.test(bsn)) return false
-  const d = bsn.split('').map(Number)
-  const sum = 9*d[0] + 8*d[1] + 7*d[2] + 6*d[3] + 5*d[4] + 4*d[5] + 3*d[6] + 2*d[7] - d[8]
-  return sum > 0 && sum % 11 === 0
-}
 
 const SECTORS: Record<string, string> = {
   logistics: 'Logística / almacén',
@@ -74,10 +66,6 @@ export default function DashboardClient({
   const [avatarUploading, setAvatarUploading] = useState(false)
   const [ettNames, setEttNames] = useState(profile?.ett_names ?? '')
   const [workingWithEtt, setWorkingWithEtt] = useState(profile?.working_with_ett ?? '')
-  const [bsn, setBsn] = useState('')
-  const [bsnSaving, setBsnSaving] = useState(false)
-  const [bsnStatus, setBsnStatus] = useState<'idle' | 'saved' | 'error' | 'invalid'>('idle')
-  const hasBsn = !!profile?.bsn
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -141,31 +129,6 @@ export default function DashboardClient({
       setSaveStatus('error')
     } finally {
       setSaving(false)
-    }
-  }
-
-  async function handleSaveBsn() {
-    const clean = bsn.replace(/\s/g, '')
-    if (!isValidBsn(clean)) {
-      setBsnStatus('invalid')
-      return
-    }
-    setBsnSaving(true)
-    setBsnStatus('idle')
-    try {
-      const res = await fetch('/api/profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ bsn: clean }),
-      })
-      if (!res.ok) throw new Error()
-      setBsnStatus('saved')
-      setBsn('')
-      setTimeout(() => setBsnStatus('idle'), 4000)
-    } catch {
-      setBsnStatus('error')
-    } finally {
-      setBsnSaving(false)
     }
   }
 
@@ -483,84 +446,6 @@ export default function DashboardClient({
             </div>
 
           </div>
-        </div>
-
-        {/* BSN */}
-        <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 16, padding: 24, marginBottom: 24 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 14, marginBottom: 16 }}>
-            <div style={{ fontSize: '1.4rem', lineHeight: 1, paddingTop: 2 }}>🔒</div>
-            <div>
-              <h2 style={{ color: 'var(--text)', fontSize: '1rem', fontWeight: 700, margin: 0, marginBottom: 4 }}>
-                Verificación BSN <span style={{ fontWeight: 400, fontSize: '0.72rem', color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>· opcional</span>
-              </h2>
-              <p style={{ color: 'var(--text-subtle)', fontSize: '0.8rem', margin: 0, lineHeight: 1.5 }}>
-                Añadir tu BSN ayuda a garantizar que las reviews vienen de personas reales.<br />
-                <strong style={{ color: 'var(--text-dim)' }}>Tu número nunca se compartirá con ninguna ETT ni tercero.</strong> Solo nosotros lo vemos, y únicamente para evitar cuentas falsas.
-              </p>
-            </div>
-          </div>
-
-          {(hasBsn && bsnStatus !== 'saved') ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#22c55e12', border: '1px solid #22c55e30', borderRadius: 8 }}>
-              <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 700 }}>✓ BSN registrado</span>
-              <span style={{ color: 'var(--text-dim)', fontSize: '0.75rem' }}>— tu identidad está verificada</span>
-            </div>
-          ) : bsnStatus === 'saved' ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 14px', background: '#22c55e12', border: '1px solid #22c55e30', borderRadius: 8 }}>
-              <span style={{ color: '#22c55e', fontSize: '0.85rem', fontWeight: 700 }}>✓ BSN registrado correctamente</span>
-            </div>
-          ) : (
-            <div>
-              <div style={{ display: 'flex', gap: 8 }}>
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  value={bsn}
-                  onChange={e => { setBsn(e.target.value.replace(/\D/g, '').slice(0, 9)); setBsnStatus('idle') }}
-                  placeholder="9 dígitos"
-                  maxLength={9}
-                  style={{
-                    flex: 1,
-                    background: 'var(--bg-input)',
-                    border: `1px solid ${bsnStatus === 'invalid' ? '#ef4444' : 'var(--border-subtle)'}`,
-                    borderRadius: 8,
-                    padding: '10px 14px',
-                    color: 'var(--text)',
-                    fontSize: '1rem',
-                    letterSpacing: '0.15em',
-                    outline: 'none',
-                    fontFamily: 'monospace',
-                  }}
-                />
-                <button
-                  onClick={handleSaveBsn}
-                  disabled={bsnSaving || bsn.length !== 9}
-                  style={{
-                    background: (bsnSaving || bsn.length !== 9) ? 'var(--border-subtle)' : '#2dd4bf',
-                    color: (bsnSaving || bsn.length !== 9) ? 'var(--text-subtle)' : '#0a0a0f',
-                    border: 'none',
-                    borderRadius: 8,
-                    padding: '10px 18px',
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    cursor: (bsnSaving || bsn.length !== 9) ? 'not-allowed' : 'pointer',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {bsnSaving ? 'Guardando...' : 'Verificar'}
-                </button>
-              </div>
-              {bsnStatus === 'invalid' && (
-                <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: 6, marginBottom: 0 }}>El número no es válido. Comprueba que sean 9 dígitos correctos.</p>
-              )}
-              {bsnStatus === 'error' && (
-                <p style={{ color: '#ef4444', fontSize: '0.78rem', marginTop: 6, marginBottom: 0 }}>Error al guardar. Inténtalo de nuevo.</p>
-              )}
-              <p style={{ color: 'var(--text-dim)', fontSize: '0.72rem', marginTop: 8, marginBottom: 0 }}>
-                El BSN lo encuentras en tu permiso de residencia, contrato de trabajo o carta del municipio.
-              </p>
-            </div>
-          )}
         </div>
 
         {/* Missions */}

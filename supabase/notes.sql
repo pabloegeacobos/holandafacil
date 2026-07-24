@@ -117,14 +117,19 @@
 -- CREATE POLICY "User reads own" ON premium_rewards FOR SELECT USING (user_id = auth.uid());
 --
 -- =====================================================================
--- BSN voluntario en profiles (verificación anti-cuentas falsas)
+-- [RETIRADO] BSN voluntario en profiles (verificación anti-cuentas falsas)
 -- =====================================================================
 --
--- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bsn TEXT;
+-- Retirado: el tratamiento de BSN está restringido por ley a entidades
+-- designadas; una plataforma privada de reseñas no lo está. La app ya
+-- no recoge ni envía este campo (ver commit "fix: remove BSN collection
+-- from review verification flow").
 --
--- El campo se valida con el elfproef (11-check) antes de guardar.
--- Nunca se devuelve en queries públicas — solo el propio usuario lo ve en su perfil.
--- No añadir SELECT policy pública que incluya esta columna.
+-- ALTER TABLE profiles ADD COLUMN IF NOT EXISTS bsn TEXT;   -- (histórico, no re-ejecutar)
+--
+-- Si la columna `profiles.bsn` existe en producción con filas no nulas,
+-- pendiente decidir si se elimina la columna o se conserva vacía.
+-- NO se ha borrado ningún dato todavía — requiere decisión explícita.
 --
 -- =====================================================================
 -- SPRINT 2 — Directorio ETT desde fuentes oficiales
