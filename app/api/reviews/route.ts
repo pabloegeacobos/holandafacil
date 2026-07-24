@@ -43,13 +43,13 @@ export async function POST(req: NextRequest) {
 
     const cleanName = agency_name.trim().slice(0, 100)
     const cleanFlags = Array.isArray(flags) ? flags.filter((f: unknown) => VALID_FLAGS.includes(f as string)) : []
-    const cleanComment = typeof comment === 'string' && comment.trim() ? comment.trim().slice(0, 500) : null
+    const cleanComment = typeof comment === 'string' && comment.trim() ? comment.trim().slice(0, 10000) : null
     const cleanNationality = VALID_NATIONALITIES.includes(nationality) ? nationality : null
     const cleanSector = VALID_SECTORS.includes(sector) ? sector : null
     const cleanSectorDetail = cleanSector === 'other' && typeof sector_detail === 'string' ? sector_detail.trim().slice(0, 60) || null : null
     const cleanWouldWorkAgain = VALID_WOULD_WORK_AGAIN.includes(would_work_again) ? would_work_again : null
     const cleanDuration = VALID_DURATIONS.includes(duration) ? duration : null
-    const cleanImprovement = typeof improvement === 'string' && improvement.trim() ? improvement.trim().slice(0, 300) : null
+    const cleanImprovement = typeof improvement === 'string' && improvement.trim() ? improvement.trim().slice(0, 10000) : null
 
     // Find or create agency
     let { data: agency } = await admin.from('agencies').select('id').ilike('name', cleanName).maybeSingle()

@@ -213,6 +213,7 @@ export default function ETTClient({
       setSubmitError(t('form_required'))
       return
     }
+
     setSubmitting(true)
     try {
       const res = await fetch('/api/reviews', {
@@ -810,13 +811,13 @@ export default function ETTClient({
                         <div style={{ marginTop: 10 }}>
                           <textarea
                             value={improvement}
-                            onChange={(e) => setImprovement(e.target.value.slice(0, 300))}
+                            onChange={(e) => setImprovement(e.target.value.slice(0, 10000))}
                             placeholder={t('form_improvement_placeholder' as ReviewsTKey)}
                             rows={2}
                             style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }}
                           />
                           <p style={{ color: 'var(--text-dim)', fontSize: '0.65rem', marginTop: 4, textAlign: 'right' }}>
-                            {improvement.length}/300
+                            {improvement.length}/10000
                           </p>
                         </div>
                       )}
@@ -836,13 +837,13 @@ export default function ETTClient({
                     <label style={labelStyle}>{t('form_comment')}</label>
                     <textarea
                       value={comment}
-                      onChange={(e) => setComment(e.target.value.slice(0, 500))}
+                      onChange={(e) => setComment(e.target.value.slice(0, 10000))}
                       placeholder={t('form_comment_placeholder')}
-                      rows={3}
+                      rows={6}
                       style={{ ...inputStyle, resize: 'vertical', lineHeight: 1.5 }}
                     />
                     <p style={{ color: 'var(--text-dim)', fontSize: '0.65rem', marginTop: 4, textAlign: 'right' }}>
-                      {comment.length}/500
+                      {comment.length}/10000
                     </p>
                   </div>
 

@@ -7,10 +7,19 @@ const BASE = 'https://holandafacil.com'
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<Record<string, string | string[] | undefined>>
 }): Promise<Metadata> {
   const { locale } = await params
+  const resolvedParams = await searchParams
+  const hasParams = Object.values(resolvedParams).some(v => v !== undefined && v !== '')
+
+  if (hasParams) {
+    return { robots: { index: false, follow: true } }
+  }
+
   const t = await getTranslations({ locale, namespace: 'reviews' })
   return {
     title: t('title'),
