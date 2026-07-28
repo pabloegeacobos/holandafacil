@@ -29,3 +29,6 @@ npm-debug.log*
 
 # local-only seed/demo scripts (not for publication)
 scripts/seed-demo.mjs
+
+# supabase CLI local state
+supabase/.temp/
