@@ -13,30 +13,11 @@
 
 import { readFileSync } from 'fs';
 import { createClient } from '@supabase/supabase-js';
+import { assertGuards, runWrite } from './lib/guard.mjs';
 
-// ─── Leer .env.local ─────────────────────────────────────────────────────────
+const { dryRun, supabaseUrl, serviceKey } = await assertGuards('push-agencies.mjs');
 
-function loadEnv() {
-  try {
-    const raw = readFileSync('.env.local', 'utf-8');
-    for (const line of raw.split('\n')) {
-      const m = line.match(/^([^#=]+)=(.*)$/);
-      if (m) process.env[m[1].trim()] = m[2].trim();
-    }
-  } catch { /* .env.local no existe, confiar en process.env */ }
-}
-
-loadEnv();
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SERVICE_KEY  = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!SUPABASE_URL || !SERVICE_KEY) {
-  console.error('❌ Faltan NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY en .env.local');
-  process.exit(1);
-}
-
-const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
+const supabase = createClient(supabaseUrl, serviceKey, {
   auth: { persistSession: false },
 });
 
@@ -95,9 +76,9 @@ let errors   = 0;
 
 // Upsert con KvK (ON CONFLICT actualiza certifications y city)
 for (const batch of chunks(withKvK.map(a => ({ name: a.name, city: a.city ?? null, kvk: a.kvk, certifications: a.certifications ?? [] })), 100)) {
-  const { error } = await supabase
-    .from('agencies')
-    .upsert(batch, { onConflict: 'kvk', ignoreDuplicates: false });
+  const { error } = await runWrite(dryRun, `upsert lote de ${batch.length} agencias (con kvk)`, () =>
+    supabase.from('agencies').upsert(batch, { onConflict: 'kvk', ignoreDuplicates: false })
+  );
 
   if (error) {
     if (error.code === '42703') {
@@ -117,9 +98,9 @@ for (const batch of chunks(withKvK.map(a => ({ name: a.name, city: a.city ?? nul
 
 // Insert sin KvK (solo las que no existen aún)
 for (const batch of chunks(toInsertNoKvK.map(a => ({ name: a.name, city: a.city ?? null, kvk: null, certifications: a.certifications ?? [] })), 100)) {
-  const { error } = await supabase
-    .from('agencies')
-    .insert(batch);
+  const { error } = await runWrite(dryRun, `insert lote de ${batch.length} agencias (sin kvk)`, () =>
+    supabase.from('agencies').insert(batch)
+  );
 
   if (error) {
     console.error(`  ⚠ Error en lote (sin kvk): ${error.message}`);
@@ -178,10 +159,9 @@ if (fetchErr) {
 
   const idsToDelete = [...seedDupByName.values()].map(a => a.id);
   if (idsToDelete.length > 0) {
-    const { error: delErr } = await supabase
-      .from('agencies')
-      .delete()
-      .in('id', idsToDelete);
+    const { error: delErr } = await runWrite(dryRun, `eliminar ${idsToDelete.length} duplicados`, () =>
+      supabase.from('agencies').delete().in('id', idsToDelete)
+    );
 
     if (delErr) {
       console.error(`  ⚠ Error al borrar duplicados: ${delErr.message}`);
@@ -204,14 +184,18 @@ if (fetchErr) {
     const match = seedByName.get(norm);
     if (!match || !match.certifications?.length) continue;
 
-    const { error: updErr } = await supabase
-      .from('agencies')
-      .update({
-        certifications: match.certifications,
-        kvk:            match.kvk ?? null,
-        city:           existing.city ?? match.city ?? null,
-      })
-      .eq('id', existing.id);
+    const { error: updErr } = await runWrite(
+      dryRun,
+      `actualizar "${existing.name}" → certifications=[${match.certifications.join(', ')}], kvk=${match.kvk ?? null}`,
+      () => supabase
+        .from('agencies')
+        .update({
+          certifications: match.certifications,
+          kvk:            match.kvk ?? null,
+          city:           existing.city ?? match.city ?? null,
+        })
+        .eq('id', existing.id)
+    );
 
     if (updErr) {
       console.error(`  ⚠ No se pudo actualizar ${existing.name}: ${updErr.message}`);
@@ -229,5 +213,9 @@ const { count } = await supabase
   .from('agencies')
   .select('*', { count: 'exact', head: true });
 
-console.log(`\n🎉 Listo. Total de agencias en Supabase: ${count}`);
-console.log('   Recarga http://localhost:3000/es/ett para ver los badges.');
+if (dryRun) {
+  console.log(`\n🔎 Dry-run completado. Total actual en Supabase (sin cambios): ${count}`);
+} else {
+  console.log(`\n🎉 Listo. Total de agencias en Supabase: ${count}`);
+  console.log('   Recarga http://localhost:3000/es/ett para ver los badges.');
+}

@@ -5,10 +5,11 @@
  */
 import { readFileSync } from 'fs';
 import { createClient } from '@supabase/supabase-js';
+import { assertGuards, runWrite } from './lib/guard.mjs';
 
-const env = readFileSync('.env.local', 'utf-8');
-for (const line of env.split('\n')) { const m = line.match(/^([^#=]+)=(.*)/); if (m) process.env[m[1].trim()] = m[2].trim(); }
-const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } });
+const { dryRun, supabaseUrl, serviceKey } = await assertGuards('fix-certs.mjs');
+
+const sb = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
 
 function norm(name) {
   return name.toLowerCase()
@@ -53,7 +54,9 @@ for (const agency of uncertified) {
   const certs = findCerts(agency.name);
   if (!certs) { console.log(`  ✗ Sin match en seed: ${agency.name}`); continue; }
 
-  const { error } = await sb.from('agencies').update({ certifications: certs }).eq('id', agency.id);
+  const { error } = await runWrite(dryRun, `actualizar "${agency.name}" → certifications=[${certs.join(', ')}]`, () =>
+    sb.from('agencies').update({ certifications: certs }).eq('id', agency.id)
+  );
   if (error) console.error(`  ⚠ ${agency.name}: ${error.message}`);
   else console.log(`  ✓ ${agency.name} → [${certs.join(', ')}]`);
 }

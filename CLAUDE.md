@@ -121,17 +121,18 @@ entre paréntesis. Ejemplo: *loonstrook* (nómina). Después, indistintamente.
 
 ## Reglas duras — código
 
-### Guardas de entorno (pendiente, prioritario)
+### Guardas de entorno
 
-Los scripts que escriben en producción deben, antes de tocar Supabase:
+Los scripts que escriben en producción, antes de tocar Supabase:
 
-- Requerir flag `--confirm-prod`.
-- Imprimir el `ref` del proyecto Supabase que van a modificar.
-- Aceptar `--dry-run` en los que lo permitan (`push-agencies.mjs`,
-  `dedup-agencies.mjs`).
-- **Fallar cerrado**: si falta cualquier condición, aborta.
+- Requieren flag `--confirm-prod` o `--dry-run` (nunca ninguna, nunca ambas).
+- Imprimen el `ref` del proyecto Supabase que van a modificar.
+- Aceptan `--dry-run` en los tres (`push-agencies.mjs`, `dedup-agencies.mjs`,
+  `fix-certs.mjs`).
+- **Fallan cerrado**: si falta cualquier condición, abortan con exit 1.
 
-Scripts afectados:
+Implementado en `scripts/lib/guard.mjs` (`assertGuards()`, `runWrite()`), ver
+`scripts/README.md` para el uso. Scripts afectados:
 
 - `scripts/push-agencies.mjs`
 - `scripts/dedup-agencies.mjs`
