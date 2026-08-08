@@ -243,7 +243,7 @@ Si tu nómina tiene descuentos que no entiendes o el salario no coincide con las
 
 Contratos fraudulentos: se recluta en el país de origen con promesas verbales o por WhatsApp (estabilidad, 2.200 €/mes, buenas condiciones). Al llegar a NL se presenta un contrato en neerlandés con cláusulas de cero horas y uitzendbeding, bajo presión para firmar inmediatamente.
 
-Robo de salario: descuentos de vivienda, transporte y "seguros" a precios inflados, sin nóminas detalladas. Hay casos documentados donde el trabajador recibe 0 € después de descuentos.
+Robo de salario: descuentos de vivienda, transporte y "seguros" a precios inflados, sin nóminas detalladas. Hay casos documentados donde el trabajador recibe 0 € después de descuentos. El [comprobador de nóminas](/recursos/comprobador-nominas) coteja tus propias loonstroken, semana a semana, contra el salario mínimo y el CAO — se procesa en tu móvil, sin subir ningún archivo.
 
 Vivienda como trampa: la ETT aloja al trabajador en bungalows de parques de vacaciones o pisos sobrepoblados, cobra 400-800 €/mes por persona (descontado del salario), y vincula el contrato de vivienda al contrato laboral. Un tribunal neerlandés dictaminó en octubre de 2025 (caso Kevin Victor vs. OTTO Work Force) que esta vinculación de contrato de trabajo y alquiler es ilegal.
 
@@ -333,7 +333,7 @@ Anuncios falsos (phantom listings):
 Los estafadores copian anuncios reales de Pararius o Funda y crean versiones falsas con un precio atractivo. El "propietario" dice estar en el extranjero, pide una fianza o el primer mes antes de enseñar el piso, y desaparece con el dinero. En 2024 el fraude en alquiler creció un 18% respecto al año anterior, siendo los trabajadores extranjeros el grupo más afectado. Señales de alerta: precio por debajo del mercado, propietario que no puede enseñar el piso en persona, presión para decidir rápido, solicitud de pago por Tikkie, PayPal o criptomonedas.
 
 Vivienda de ETT vinculada al contrato laboral:
-Es el abuso más extendido y grave para trabajadores migrantes. La ETT ofrece alojamiento en parques de vacaciones o pisos compartidos por 400-800 €/mes por persona (descontado del salario), vinculando el contrato de trabajo y el alquiler. Si pierdes el trabajo, pierdes también el techo ese mismo día. Un tribunal neerlandés declaró ilegal esta vinculación en octubre de 2025. Puedes reclamar en los tribunales con ayuda de FairWork.
+Es el abuso más extendido y grave para trabajadores migrantes. La ETT ofrece alojamiento en parques de vacaciones o pisos compartidos por 400-800 €/mes por persona (descontado del salario), vinculando el contrato de trabajo y el alquiler. Si pierdes el trabajo, pierdes también el techo ese mismo día. Un tribunal neerlandés declaró ilegal esta vinculación en octubre de 2025. Puedes reclamar en los tribunales con ayuda de FairWork. Si quieres comprobar si lo que te descuentan por vivienda respeta el tope del CAO, el [comprobador de nóminas](/recursos/comprobador-nominas) lo coteja automáticamente contra tus propias loonstroken.
 
 Subarriendo ilegal de vivienda social:
 Hay personas que alquilan una vivienda social a precio regulado y la subarrienden a trabajadores migrantes a precios de mercado. El trabajador no tiene contrato oficial y puede ser desahuciado inmediatamente sin recursos legales.
