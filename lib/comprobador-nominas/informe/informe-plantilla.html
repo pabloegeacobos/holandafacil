@@ -1,0 +1,569 @@
+<meta charset="utf-8">
+<title>Informe de nóminas — plantilla</title>
+<style>
+  :root{
+    --papel:#ffffff;
+    --tinta:#141a1f;
+    --tinta-2:#59636e;
+    --tinta-3:#8b959f;
+    --regla:#d9dee3;
+    --regla-fuerte:#141a1f;
+    --sello:#2b4c6f;
+    --trama:#f2f4f6;
+    --marca:#b9622a;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans: "Inter","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --mono: "SF Mono",ui-monospace,"DejaVu Sans Mono","Roboto Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;padding:0 20px 80px;background:var(--trama);
+    font-family:var(--serif);color:var(--tinta);
+    font-size:15px;line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .hoja{max-width:940px;margin:0 auto;background:var(--papel);padding:44px 52px 56px;border:1px solid var(--regla)}
+  h1{
+    font-family:var(--sans);font-size:19px;font-weight:650;letter-spacing:-.01em;
+    margin:0 0 2px;line-height:1.25;
+  }
+  .subtitulo{font-family:var(--sans);font-size:12px;color:var(--tinta-2);margin:0}
+  h2{
+    font-family:var(--sans);font-size:10.5px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.13em;color:var(--tinta);margin:0;padding:0 0 6px;
+  }
+  h2 .nl{font-weight:500;color:var(--tinta-3);letter-spacing:.09em;text-transform:none}
+  section{margin-top:30px;border-top:1.5px solid var(--regla-fuerte);padding-top:9px;page-break-inside:auto}
+  section > .cuerpo{margin-top:12px}
+  .num{
+    font-family:var(--mono);font-size:10px;color:var(--tinta-3);
+    float:right;letter-spacing:.06em;
+  }
+  p{margin:0 0 9px}
+  p:last-child{margin-bottom:0}
+  .nota{font-family:var(--sans);font-size:12px;color:var(--tinta-2);line-height:1.5}
+  header{border-bottom:3px double var(--regla-fuerte);padding-bottom:14px}
+  .marca-linea{
+    font-family:var(--sans);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--sello);font-weight:700;margin:0 0 10px;
+  }
+  .ficha{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:13px}
+  .ficha th{
+    text-align:left;vertical-align:top;padding:6px 16px 6px 0;width:210px;
+    font-weight:600;color:var(--tinta-2);font-size:11px;letter-spacing:.04em;
+    text-transform:uppercase;border-bottom:1px solid var(--regla);
+  }
+  .ficha td{padding:6px 0;vertical-align:top;border-bottom:1px solid var(--regla)}
+  .ficha tr:last-child th,.ficha tr:last-child td{border-bottom:none}
+  .vacio{color:var(--tinta-3);font-style:italic}
+  .tabla{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:11.5px}
+  .tabla thead th{
+    font-family:var(--sans);font-size:9.5px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.08em;color:var(--tinta-2);text-align:left;
+    padding:0 8px 6px 0;border-bottom:1.5px solid var(--regla-fuerte);white-space:nowrap;
+  }
+  .tabla td{padding:3px 8px 3px 0;border-bottom:1px solid var(--regla);white-space:nowrap}
+  .tabla .n{text-align:right;padding-right:14px;font-variant-numeric:tabular-nums}
+  .tabla .empresa{font-family:var(--sans);font-size:11.5px;white-space:normal}
+  .tabla .doc{font-size:10px;color:var(--tinta-3)}
+  .tabla tr.hueco td{color:var(--tinta-3);background:var(--trama);font-style:italic}
+  .tabla tr.sinhoras td{background:#fbfaf7}
+  .tabla tr.dup td{background:#f7f8fa}
+  .delta{font-variant-numeric:tabular-nums}
+  .delta.baja{color:var(--marca);font-weight:700}
+  .delta.sube{color:var(--tinta-2)}
+  .rep{color:var(--marca);font-weight:700}
+  .thead-grupo{
+    font-family:var(--sans);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--tinta-3);
+  }
+  ol.puntos{list-style:none;counter-reset:p;margin:0;padding:0}
+  ol.puntos li{
+    counter-increment:p;position:relative;padding:10px 0 10px 40px;
+    border-bottom:1px solid var(--regla);page-break-inside:avoid;
+  }
+  ol.puntos li:last-child{border-bottom:none}
+  ol.puntos li::before{
+    content:"V-" counter(p,decimal-leading-zero);
+    position:absolute;left:0;top:11px;
+    font-family:var(--mono);font-size:10px;color:var(--sello);font-weight:700;letter-spacing:.04em;
+  }
+  .punto-t{font-family:var(--sans);font-size:13px;font-weight:650;margin:0 0 3px}
+  .punto-d{font-family:var(--mono);font-size:11.5px;color:var(--tinta);margin:0 0 3px}
+  .punto-f{font-family:var(--sans);font-size:10.5px;color:var(--tinta-3);margin:0}
+  .normas{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:11.5px}
+  .normas th{
+    text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;
+    color:var(--tinta-2);padding:0 10px 6px 0;border-bottom:1.5px solid var(--regla-fuerte);
+  }
+  .normas td{padding:6px 10px 6px 0;border-bottom:1px solid var(--regla);vertical-align:top}
+  .normas .val{font-family:var(--mono);white-space:nowrap}
+  ul.lista{margin:0;padding:0;list-style:none}
+  ul.lista li{
+    font-family:var(--sans);font-size:12.5px;padding:5px 0 5px 18px;position:relative;
+    border-bottom:1px solid var(--regla);
+  }
+  ul.lista li:last-child{border-bottom:none}
+  ul.lista li::before{content:"—";position:absolute;left:0;color:var(--tinta-3)}
+  .aviso-corto{
+    font-family:var(--sans);font-size:11.5px;line-height:1.5;color:var(--tinta-2);
+    border-left:3px solid var(--sello);padding:8px 0 8px 12px;margin:16px 0 0;
+  }
+  .aviso-final{
+    margin-top:30px;border:1px solid var(--regla-fuerte);padding:16px 18px;
+    font-family:var(--sans);font-size:11.5px;line-height:1.55;color:var(--tinta);
+    page-break-inside:avoid;
+  }
+  .aviso-final h2{margin-bottom:8px}
+  .leyenda{
+    font-family:var(--sans);font-size:10.5px;color:var(--tinta-2);
+    display:flex;gap:22px;flex-wrap:wrap;margin-bottom:10px;
+  }
+  .leyenda b{font-family:var(--mono);color:var(--marca)}
+  .pie{
+    margin-top:26px;padding-top:10px;border-top:1px solid var(--regla);
+    font-family:var(--sans);font-size:10px;color:var(--tinta-3);
+    display:flex;justify-content:space-between;gap:20px;
+  }
+  .solo-pantalla{
+    max-width:940px;margin:20px auto;background:#fff8e8;border:1px solid #e0c98a;
+    padding:14px 18px;font-family:var(--sans);font-size:12.5px;line-height:1.55;color:#4a3a18;
+  }
+  .solo-pantalla b{display:block;margin-bottom:4px}
+  @page{size:A4;margin:14mm 12mm}
+  @media print{
+    body{background:#fff;padding:0;font-size:10pt}
+    .hoja{border:none;padding:0;max-width:none}
+    .solo-pantalla{display:none !important}
+    section{page-break-inside:auto}
+    .tabla tr{page-break-inside:avoid}
+    thead{display:table-header-group}
+  }
+  @media (max-width:720px){
+    .hoja{padding:24px 18px}
+    .ficha th{width:auto;display:block;border-bottom:none;padding-bottom:0}
+    .ficha td{display:block;padding-top:0}
+    .tabla{font-size:10.5px}
+  }
+</style>
+
+<div class="solo-pantalla">
+  <b>Antes de guardar como PDF</b>
+  En el diálogo de impresión, desactiva «Encabezados y pies de página» (Chrome) o «Imprimir encabezados y pies»
+  (Firefox/Edge). Si no lo haces, el PDF incluirá la ruta del archivo en tu ordenador, que contiene tu nombre de
+  usuario. Márgenes: los define el propio documento. Este aviso no aparece en el PDF.
+</div>
+
+<div class="solo-pantalla" id="banner-demo"></div>
+
+<div class="hoja" id="hoja"></div>
+
+<script>
+/* ==========================================================================
+   PLANTILLA DE INFORME DE NÓMINAS — holandafacil.com
+   --------------------------------------------------------------------------
+   Todo lo que se imprime se deriva del objeto CASO. Ningún recuento, ningún
+   total y ninguna cifra se escribe a mano en el HTML: si el dato no está en
+   CASO, la plantilla imprime "no disponible" en vez de inventarlo.
+
+   REGLAS PARA QUIEN IMPLEMENTE (no borrar):
+   1. Ningún literal numérico en el texto. Todo recuento sale de .length.
+   2. Ningún verbo de valoración en la salida: nada de "correcto", "conforme",
+      "indebido", "irregular", "infracción", "ilegal", "sospechoso".
+      La plantilla pone dos cifras juntas; concluir es del lector.
+   3. Toda cifra impresa lleva referencia al documento del que sale.
+   4. Una norma sin numero de artículo y sin fecha de vigencia no se imprime:
+      se traslada a "no comprobable".
+   5. Deduplicar por (semana + referencia de documento) antes de cargar CASO.
+   ========================================================================== */
+
+/* ---------- utilidades ISO ---------- */
+const bisiesto = y => (y%4===0 && y%100!==0) || y%400===0;
+const semanasISO = y => {
+  const p = Y => { const d = new Date(Date.UTC(Y,0,1)).getUTCDay(); return (d+6)%7; }; // lunes=0 … domingo=6
+  return (p(y)===3 || (bisiesto(y) && p(y)===2)) ? 53 : 52;  // 53 si el 1-ene cae en jueves, o en miércoles de año bisiesto
+};
+const parseSem = s => { const m = /^(\d{4})-S(\d{1,2})$/.exec(s); return m ? {y:+m[1], w:+m[2]} : null; };
+const fmtSem = ({y,w}) => `${y}-S${String(w).padStart(2,'0')}`;
+const sigSem = ({y,w}) => w >= semanasISO(y) ? {y:y+1,w:1} : {y,w:w+1};
+const cmpSem = (a,b) => a.y-b.y || a.w-b.w;
+const rangoSem = (desde,hasta) => {
+  const out=[]; let c=parseSem(desde); const f=parseSem(hasta); let guarda=0;
+  while(cmpSem(c,f)<=0 && guarda++<600){ out.push(fmtSem(c)); c=sigSem(c); }
+  return out;
+};
+const eur = n => (n===null||n===undefined||Number.isNaN(n)) ? null
+  : '€' + n.toFixed(2).replace('.',',');
+const esc = s => String(s??'').replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const oVacio = (v,txt='no disponible') => (v===null||v===undefined||v==='') ? `<span class="vacio">${txt}</span>` : esc(v);
+
+/* ==========================================================================
+   CASO — sustituir íntegramente por los datos extraídos de las nóminas.
+   ========================================================================== */
+/* CASO:START */
+const CASO = {
+  demo: true,
+  demoNota: "Datos de demostración reconstruidos a partir de un informe resumido. "+
+            "Las semanas exactas de cada escalón de tarifa NO están verificadas contra las nóminas originales. "+
+            "Sirve para ver la maquetación, no como prueba.",
+
+  generadoEl: "2026-08-07",
+  empleador:  { nombre:"People Work Service B.V.", kvk:null },
+  periodo:    { desde:"2024-S49", hasta:"2026-S30" },
+  convenioAsumido: null,          // null => la plantilla lo declara como no determinado
+  documentosNoAportados: [
+    "Contrato de trabajo (uitzendovereenkomst)",
+    "Bevestiging van uitzending / confirmación de puesta a disposición",
+    "Contrato o anexo de vivienda",
+    "Comunicaciones escritas sobre la clasificación de la función"
+  ],
+
+  /* Normas con vigencia verificada. Sin artículo o sin fecha => no se imprime aquí. */
+  normas: [
+    // { concepto:"Salario mínimo por hora (mayores de 21)", norma:"Wet minimumloon", articulo:"art. 8", desde:"2026-01-01", hasta:"2026-06-30", valor:null, unidad:"€/hora", fuente:"" },
+    // { concepto:"Salario mínimo por hora (mayores de 21)", norma:"Wet minimumloon", articulo:"art. 8", desde:"2026-07-01", hasta:null,        valor:null, unidad:"€/hora", fuente:"" },
+    // { concepto:"Máximo de descuento por vivienda",        norma:"CAO voor Uitzendkrachten 2026-2028", articulo:"art. ??", desde:"2026-01-01", hasta:null, valor:null, unidad:"% del WML", fuente:"" }
+  ],
+  normasPendientes: [
+    "Salario mínimo legal por hora vigente desde 2026-01-01 (importe y fuente sin cargar)",
+    "Salario mínimo legal por hora vigente desde 2026-07-01 (importe y fuente sin cargar)",
+    "Máximo de descuento por vivienda: artículo y vigencia sin confirmar para el convenio 2026-2028"
+  ],
+
+  /* Una entrada por nómina localizada. Varias entradas con la misma semana = varias nóminas. */
+  semanas: []
+};
+/* CASO:END */
+
+/* ---------- generador de los datos de DEMOSTRACIÓN ---------- */
+(function construirDemo(){
+  if(!CASO.demo) return;
+  const S = [];
+  let doc = 0;
+  const add = o => { S.push(Object.assign({horasNormales:0,horasFestivo:0,tarifa:null,vivienda:null,empresaUsuaria:null,doc:`doc_${String(++doc).padStart(2,'0')}`},o)); };
+  const tramo = (desde, hasta, tarifa, empresa, viv, saltar=[]) =>
+    rangoSem(desde,hasta).forEach(s => { if(!saltar.includes(s))
+      add({semana:s, empresaUsuaria:empresa, horasNormales:38, tarifa, vivienda:viv}); });
+
+  tramo("2024-S49","2024-S51",14.68,"WDP Draadbewerking",144.00);
+  add({semana:"2024-S52", empresaUsuaria:"CleanLease Ooij", horasNormales:32, tarifa:13.68, vivienda:144.00});
+  tramo("2025-S01","2025-S09",14.68,"WDP Draadbewerking",144.00);
+  // 2025-S10..S12: sin nómina localizada  -> huecos
+  tramo("2025-S13","2025-S43",15.28,"WDP Draadbewerking",144.00,["2025-S31","2025-S32"]);
+  add({semana:"2025-S31", horasNormales:0, horasFestivo:38, vivienda:144.00});
+  add({semana:"2025-S32", horasNormales:0, horasFestivo:38, vivienda:144.00});
+  tramo("2025-S44","2025-S51",15.74,"WDP Draadbewerking",144.00);
+  add({semana:"2025-S52", horasNormales:0, horasFestivo:38, vivienda:144.00});
+  tramo("2026-S01","2026-S12",15.74,"WDP Draadbewerking",147.10);
+  // segundas nóminas de S10, S11 y S12
+  ["2026-S10","2026-S11","2026-S12"].forEach(s =>
+    add({semana:s, empresaUsuaria:"WDP Draadbewerking", horasNormales:38, tarifa:16.22, vivienda:147.10}));
+  tramo("2026-S13","2026-S19",16.22,"WDP Draadbewerking",147.10);
+  add({semana:"2026-S20", horasNormales:0, horasFestivo:38, vivienda:147.10});
+  tramo("2026-S21","2026-S23",14.71,"Van Thiel United",147.10);
+  tramo("2026-S24","2026-S28",15.74,"Van Thiel United",147.10);
+  tramo("2026-S29","2026-S30",16.22,"Van Thiel United",147.10);
+
+  CASO.semanas = S;
+})();
+
+/* ==========================================================================
+   ANÁLISIS — sólo aritmética sobre CASO. Nada de aquí emite un juicio.
+   ========================================================================== */
+function analizar(c){
+  const cargadas = c.semanas.map(n=>parseSem(n.semana)).filter(Boolean).sort(cmpSem);
+  let ini = parseSem(c.periodo.desde), fin = parseSem(c.periodo.hasta);
+  const declaradoValido = !!(ini && fin && cmpSem(ini,fin)<=0);
+  if(!declaradoValido && cargadas.length){ ini = cargadas[0]; fin = cargadas[cargadas.length-1]; }
+  let ampliado = false;
+  if(cargadas.length && ini && fin){
+    if(cmpSem(cargadas[0],ini)<0){ ini = cargadas[0]; ampliado = true; }
+    if(cmpSem(cargadas[cargadas.length-1],fin)>0){ fin = cargadas[cargadas.length-1]; ampliado = true; }
+  }
+  const periodoEfectivo = (ini&&fin) ? {desde:fmtSem(ini), hasta:fmtSem(fin)} : null;
+  const todas = periodoEfectivo ? rangoSem(periodoEfectivo.desde, periodoEfectivo.hasta) : [];
+  const porSemana = new Map();
+  c.semanas.forEach(n => {
+    if(!porSemana.has(n.semana)) porSemana.set(n.semana, []);
+    porSemana.get(n.semana).push(n);
+  });
+
+  const filas = todas.map(s => {
+    const nn = porSemana.get(s) || [];
+    return { semana:s, nominas:nn, hueco:nn.length===0, duplicada:nn.length>1 };
+  });
+
+  const huecos     = filas.filter(f=>f.hueco).map(f=>f.semana);
+  const duplicadas = filas.filter(f=>f.duplicada);
+
+  const secuencia = filas
+    .filter(f=>f.nominas.length===1 && f.nominas[0].tarifa!=null)
+    .map(f=>({semana:f.semana, tarifa:f.nominas[0].tarifa,
+              empresa:f.nominas[0].empresaUsuaria, doc:f.nominas[0].doc}));
+
+  const delta = new Map();
+  secuencia.forEach((x,i)=>{ if(i>0) delta.set(x.semana, +(x.tarifa - secuencia[i-1].tarifa).toFixed(2)); });
+
+  const tramos = [];
+  secuencia.forEach(x=>{
+    const u = tramos[tramos.length-1];
+    if(u && u.tarifa===x.tarifa) { u.hasta=x.semana; u.n++; u.empresaFin=x.empresa; u.docFin=x.doc; }
+    else tramos.push({tarifa:x.tarifa, desde:x.semana, hasta:x.semana, n:1,
+                      empresaIni:x.empresa, empresaFin:x.empresa, docIni:x.doc, docFin:x.doc});
+  });
+  const descensos = [];
+  tramos.forEach((t,i)=>{
+    if(i===0) return;
+    const prev = tramos[i-1], sig = tramos[i+1];
+    if(t.tarifa >= prev.tarifa) return;
+    if(t.n===1 && sig && sig.tarifa >= prev.tarifa) return;
+
+    const antes = new Set(tramos.slice(0,i).map(x=>x.tarifa));
+    const repetidos = tramos.slice(i+1).filter(x=>antes.has(x.tarifa));
+    const semanasMarcadas = [];
+    repetidos.forEach(x=>{
+      secuencia.forEach(s=>{
+        if(s.tarifa===x.tarifa && cmpSem(parseSem(s.semana),parseSem(x.desde))>=0
+           && cmpSem(parseSem(s.semana),parseSem(x.hasta))<=0) semanasMarcadas.push(s.semana);
+      });
+    });
+    descensos.push({ prev, t, sig, repetidos, semanasMarcadas,
+                     delta:+(t.tarifa-prev.tarifa).toFixed(2),
+                     cambioEmpresa: !!(prev.empresaFin && t.empresaIni && prev.empresaFin!==t.empresaIni) });
+  });
+  const marcadas = new Set(descensos.flatMap(d=>d.semanasMarcadas));
+
+  const viv = filas.flatMap(f=>f.nominas).filter(n=>n.vivienda!=null)
+                   .map(n=>({semana:n.semana, importe:n.vivienda, doc:n.doc}));
+  const cambiosVivienda = [];
+  viv.forEach((v,i)=>{ if(i>0 && v.importe!==viv[i-1].importe) cambiosVivienda.push({de:viv[i-1], a:v}); });
+  const vivSinHoras = c.semanas.filter(n => (n.horasNormales||0)===0 && n.vivienda!=null);
+
+  const totalNominas = c.semanas.length;
+  const empresas = [...new Set(c.semanas.map(n=>n.empresaUsuaria).filter(Boolean))]
+    .map(e => ({ nombre:e,
+                 n:  c.semanas.filter(n=>n.empresaUsuaria===e).length,
+                 sem:new Set(c.semanas.filter(n=>n.empresaUsuaria===e).map(n=>n.semana)).size }));
+  const horasNormales = c.semanas.reduce((s,n)=>s+(n.horasNormales||0),0);
+  const horasFestivo  = c.semanas.reduce((s,n)=>s+(n.horasFestivo ||0),0);
+
+  const tarifas = secuencia.map(x=>x.tarifa);
+  return { todas, filas, huecos, duplicadas, secuencia, delta, tramos, descensos, marcadas,
+           periodoEfectivo, declaradoValido, ampliado,
+           cambiosVivienda, vivSinHoras, totalNominas, empresas, horasNormales, horasFestivo,
+           tarifaMin: tarifas.length?Math.min(...tarifas):null,
+           tarifaMax: tarifas.length?Math.max(...tarifas):null };
+}
+
+const signo = n => (n>0?'+':n<0?'−':'±') + Math.abs(n).toFixed(2).replace('.',',');
+
+function puntos(a, hayNormaVivienda){
+  const P = [];
+  a.descensos.forEach(d=>{
+    const emp = d.cambioEmpresa
+      ? `  ·  empresa usuaria: ${d.prev.empresaFin} → ${d.t.empresaIni}`
+      : `  ·  empresa usuaria sin cambio (${d.t.empresaIni||'no consta'})`;
+    const rep = d.repetidos.length
+      ? `Tras el descenso, la secuencia vuelve a recorrer tarifas ya alcanzadas antes: `+
+        d.repetidos.map(x=>`${eur(x.tarifa)} (${x.desde===x.hasta?x.desde:`${x.desde} → ${x.hasta}`})`).join('  ·  ')+'. '
+      : '';
+    P.push({
+      t:"Descenso de la tarifa horaria entre dos semanas con tarifa registrada",
+      d:`${d.prev.hasta} ${eur(d.prev.tarifa)} → ${d.t.desde} ${eur(d.t.tarifa)}  ·  ${signo(d.delta)} €/hora${emp}`,
+      f:`${rep}Documentos: ${d.prev.docFin}, ${d.t.docIni}.`
+    });
+  });
+  if(a.duplicadas.length){
+    P.push({
+      t:"Semanas con más de una nómina y tarifas distintas",
+      d:a.duplicadas.map(f=>`${f.semana}: `+
+          f.nominas.map(n=>n.tarifa!=null?eur(n.tarifa):'sin tarifa').join(' vs. ')).join('  ·  '),
+      f:`${a.duplicadas.length} semana(s). Documentos: `+
+        a.duplicadas.map(f=>f.nominas.map(n=>n.doc).join('/')).join(', ')+
+        `. Una de las versiones puede ser una corrección posterior; esta herramienta no determina cuál prevalece.`
+    });
+  }
+  if(a.cambiosVivienda.length){
+    P.push({
+      t:"Cambios en el importe descontado por vivienda",
+      d:a.cambiosVivienda.map(cv=>
+          `${cv.de.semana} ${eur(cv.de.importe)} → ${cv.a.semana} ${eur(cv.a.importe)} (${signo(+(cv.a.importe-cv.de.importe).toFixed(2))})`).join('  ·  '),
+      f:`Documentos: `+a.cambiosVivienda.map(cv=>`${cv.de.doc}/${cv.a.doc}`).join(', ')+'. '+
+        (hayNormaVivienda ? 'Máximo aplicable: ver sección 03.'
+                          : 'Máximo aplicable: no cargado en la herramienta; sin comprobar.')
+    });
+  }
+  if(a.vivSinHoras.length){
+    P.push({
+      t:"Semanas sin horas normales registradas en las que figura descuento por vivienda",
+      d:a.vivSinHoras.map(n=>`${n.semana} ${eur(n.vivienda)}`).join('  ·  '),
+      f:`${a.vivSinHoras.length} semana(s). Documentos: ${a.vivSinHoras.map(n=>n.doc).join(', ')}.`
+    });
+  }
+  return P;
+}
+
+function render(){
+  const c = CASO, a = analizar(c);
+  const hayNormaVivienda = c.normas.some(n=>/vivienda|huisvesting/i.test(n.concepto));
+  const P = puntos(a, hayNormaVivienda);
+  const H = [];
+  const sec = (n,titulo,nl,cuerpo) => H.push(
+    `<section><span class="num">${n}</span><h2>${titulo} <span class="nl">· ${nl}</span></h2><div class="cuerpo">${cuerpo}</div></section>`);
+
+  H.push(`<header>
+    <p class="marca-linea">holandafacil.com · comprobador de nóminas</p>
+    <h1>Informe de nóminas</h1>
+    <p class="subtitulo">Loonstrookoverzicht · documento generado en el dispositivo del trabajador · ${esc(c.generadoEl)}</p>
+    <p class="aviso-corto">Este documento ordena y compara cifras que ya constan en las nóminas del trabajador.
+      No determina qué convenio colectivo es aplicable, no interpreta el contrato de trabajo, no valora si existe
+      una reclamación y no garantiza ningún resultado. No es asesoramiento jurídico.</p>
+  </header>`);
+
+  const filaFicha = (k,v) => `<tr><th>${k}</th><td>${v}</td></tr>`;
+  sec('01','Ficha del caso','Zaakoverzicht', `<table class="ficha">
+    ${filaFicha('Empleador (werkgever)', oVacio(c.empleador.nombre))}
+    ${filaFicha('Número KvK', oVacio(c.empleador.kvk,'no aportado — necesario para identificar la entidad'))}
+    ${filaFicha('Periodo documentado', a.periodoEfectivo
+        ? `${esc(a.periodoEfectivo.desde)} → ${esc(a.periodoEfectivo.hasta)}`
+          + (a.ampliado ? ` <span class="vacio">(ampliado para cubrir todas las nóminas cargadas; declarado: ${esc(c.periodo.desde)} → ${esc(c.periodo.hasta)})</span>` : '')
+          + (!a.declaradoValido ? ` <span class="vacio">(periodo declarado no válido; deducido de las nóminas)</span>` : '')
+        : oVacio(null,'no determinado — no hay nóminas cargadas'))}
+    ${filaFicha('Semanas del periodo', `${a.todas.length} semanas ISO`)}
+    ${filaFicha('Nóminas localizadas', `${a.totalNominas} en ${a.todas.length - a.huecos.length} de las ${a.todas.length} semanas`)}
+    ${filaFicha('Semanas sin nómina localizada', a.huecos.length ? `${a.huecos.length} — ver sección 06` : '0')}
+    ${filaFicha('Empresas usuarias (inleners)', a.empresas.length
+        ? a.empresas.map(e=>`${esc(e.nombre)} <span class="vacio">(${e.sem} ${e.sem===1?'semana':'semanas'}${e.n!==e.sem?`, ${e.n} nóminas`:''})</span>`).join('<br>')
+        : oVacio(null))}
+    ${filaFicha('Horas registradas', `${a.horasNormales} normales · ${a.horasFestivo} de festivo/vacaciones`)}
+    ${filaFicha('Recorrido de la tarifa horaria', a.tarifaMin!=null ? `${eur(a.tarifaMin)} → ${eur(a.tarifaMax)}` : oVacio(null))}
+    ${filaFicha('Convenio asumido para los cálculos', oVacio(c.convenioAsumido,'no determinado — ver sección 03'))}
+    ${filaFicha('Puntos a verificar', `${P.length}`)}
+  </table>`);
+
+  sec('02','Alcance y procedencia de los datos','Reikwijdte en herkomst', `
+    <p class="nota">Las cifras de este informe se han extraído automáticamente de las nóminas en PDF que el
+    trabajador cargó en su propio dispositivo. Los archivos no se enviaron a ningún servidor. Este informe es una
+    ordenación de esas cifras: <b>la prueba son las nóminas originales</b>, y cada cifra debe verificarse contra
+    ellas antes de usar este documento ante nadie.</p>
+    <p class="nota">Documentos que no se han aportado a la herramienta y que quedan fuera de toda comprobación:</p>
+    <ul class="lista">${c.documentosNoAportados.map(d=>`<li>${esc(d)}</li>`).join('')}</ul>`);
+
+  const normasHTML = c.normas.length ? `<table class="normas">
+      <thead><tr><th>Concepto</th><th>Norma y artículo</th><th>Vigencia</th><th>Valor publicado</th></tr></thead>
+      <tbody>${c.normas.map(n=>`<tr>
+        <td>${esc(n.concepto)}</td>
+        <td>${esc(n.norma)}, ${esc(n.articulo)}</td>
+        <td class="val">${esc(n.desde)} → ${n.hasta?esc(n.hasta):'vigente'}</td>
+        <td class="val">${n.valor!=null?`${eur(n.valor)} ${esc(n.unidad||'')}`:oVacio(null)}</td>
+      </tr>`).join('')}</tbody></table>`
+    : `<p class="nota"><b>No se ha aplicado ninguna norma en este informe.</b> Una norma sólo se usa aquí si constan
+       su artículo y su fecha de vigencia. Mientras falten, este documento se limita a ordenar las cifras de las
+       nóminas y no compara ninguna de ellas con un mínimo o un máximo legal.</p>`;
+  sec('03','Normas aplicadas y vigencia','Toegepaste normen', normasHTML + `
+    <p class="nota" style="margin-top:12px">Determinar qué convenio colectivo resulta aplicable a la relación laboral
+    exige criterio jurídico y esta herramienta no lo hace. Convenio asumido para los cálculos:
+    ${oVacio(c.convenioAsumido,'ninguno')}.</p>
+    ${c.normasPendientes.length ? `<p class="nota">Normas cuyo importe o vigencia no se han cargado en la
+      herramienta y que, por tanto, no se han comprobado:</p>
+      <ul class="lista">${c.normasPendientes.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>` : ''}`);
+
+  const marcadas = a.marcadas;
+  const filasHTML = a.filas.map(f=>{
+    if(f.hueco) return `<tr class="hueco"><td>${f.semana}</td><td class="empresa" colspan="7">sin nómina localizada</td></tr>`;
+    return f.nominas.map((n,i)=>{
+      const d = f.nominas.length===1 ? a.delta.get(f.semana) : undefined;
+      const dTxt = d===undefined||d===null ? '' :
+        `<span class="delta ${d<0?'baja':'sube'}">${d>0?'+':d<0?'−':'±'}${Math.abs(d).toFixed(2).replace('.',',')}</span>`;
+      const tar = n.tarifa==null ? '' :
+        `${marcadas.has(f.semana)&&f.nominas.length===1?'<span class="rep">◆</span> ':''}${eur(n.tarifa)}`;
+      const cls = f.nominas.length>1 ? 'dup' : (n.horasNormales===0 ? 'sinhoras' : '');
+      return `<tr class="${cls}">
+        <td>${i===0?f.semana:''}${f.nominas.length>1?` <span class="doc">(${i+1}/${f.nominas.length})</span>`:''}</td>
+        <td class="empresa">${n.empresaUsuaria?esc(n.empresaUsuaria):'<span class="vacio">—</span>'}</td>
+        <td class="n">${n.horasNormales||0}</td>
+        <td class="n">${n.horasFestivo||0}</td>
+        <td class="n">${tar}</td>
+        <td class="n">${dTxt}</td>
+        <td class="n">${n.vivienda!=null?eur(n.vivienda):''}</td>
+        <td class="doc">${esc(n.doc||'')}</td>
+      </tr>`;
+    }).join('');
+  }).join('');
+  sec('04','Cronología completa','Volledig weekoverzicht', `
+    <div class="leyenda">
+      <span><b>◆</b> tarifa que ya figuraba antes de un descenso registrado</span>
+      <span><b>Δ</b> variación respecto a la semana anterior con tarifa</span>
+      <span>(1/2) semana con más de una nómina</span>
+    </div>
+    <table class="tabla">
+      <thead><tr>
+        <th>Semana</th><th>Empresa usuaria</th><th style="text-align:right">H. norm.</th>
+        <th style="text-align:right">H. fest.</th><th style="text-align:right">€/hora</th>
+        <th style="text-align:right">Δ</th><th style="text-align:right">Vivienda</th><th>Doc.</th>
+      </tr></thead>
+      <tbody>${filasHTML}</tbody>
+    </table>`);
+
+  sec('05','Puntos a verificar','Te verifiëren punten', P.length ? `
+    <p class="nota">Cada punto es una comparación entre cifras que constan en las nóminas. La herramienta no valora
+    ninguno de ellos: puede existir una explicación válida para cualquiera. Se listan para que puedan preguntarse
+    por escrito o llevarse a FNV, la SNCU o un profesional.</p>
+    <ol class="puntos">${P.map(p=>`<li>
+      <p class="punto-t">${esc(p.t)}</p>
+      <p class="punto-d">${p.d}</p>
+      <p class="punto-f">${esc(p.f)}</p></li>`).join('')}</ol>`
+    : `<p class="nota">No se ha detectado ninguna comparación numérica que destacar con los datos cargados.</p>`);
+
+  sec('06','Limitaciones y huecos','Beperkingen en ontbrekende gegevens', `
+    <p class="nota">Semanas del periodo sin nómina localizada
+      (${a.huecos.length} de ${a.todas.length}):</p>
+    <p class="punto-d">${a.huecos.length ? a.huecos.join(' · ') : 'ninguna'}</p>
+    <p class="nota" style="margin-top:12px">Fuera del alcance de esta herramienta, en todos los casos:</p>
+    <ul class="lista">
+      <li>Qué convenio colectivo resulta aplicable y qué grupo de función corresponde al puesto.</li>
+      <li>Si una diferencia de tarifa tiene o no una explicación válida.</li>
+      <li>Qué versión prevalece cuando existen dos nóminas para la misma semana.</li>
+      <li>El contenido del contrato de trabajo y de cualquier acuerdo sobre vivienda.</li>
+      <li>Si existe una reclamación, por qué importe y con qué plazo.</li>
+    </ul>`);
+
+  sec('07','Qué llevar a la cita','Wat mee te nemen', `
+    <p class="nota">Este informe ordena cifras; los documentos originales son la prueba. Conviene llevar:</p>
+    <ul class="lista">
+      <li>Las nóminas originales en PDF, todas, incluidas las semanas marcadas como huecos si aparecen.</li>
+      <li>El contrato de trabajo y cualquier anexo o prórroga.</li>
+      <li>La bevestiging van uitzending de cada empresa usuaria.</li>
+      <li>El contrato de vivienda o el documento donde consten los importes.</li>
+      <li>Los extractos bancarios del periodo, para cotejar lo cobrado con lo que dice la nómina.</li>
+      <li>Cualquier respuesta escrita de la empresa sobre la tarifa o la clasificación.</li>
+    </ul>`);
+
+  H.push(`<div class="aviso-final">
+    <h2>Aviso <span class="nl">· Disclaimer</span></h2>
+    <p>Esta herramienta ordena y compara cifras que constan en las nóminas aportadas por el trabajador. Cuando una
+    norma legal figura en la sección 03 con su artículo y su fecha de vigencia, la herramienta muestra el importe
+    publicado junto al de la nómina; no emite ninguna conclusión sobre si el importe de la nómina es correcto.</p>
+    <p>Esta herramienta <b>no</b> determina qué convenio colectivo es aplicable, <b>no</b> interpreta el contrato de
+    trabajo, <b>no</b> valora si existe una reclamación ni su importe, <b>no</b> calcula plazos y <b>no</b> garantiza
+    ningún resultado. No es asesoramiento jurídico. holandafacil.com no representa al trabajador ni actúa como
+    asesor, y no responde del uso que se dé a este documento.</p>
+    <p>La fuente de prueba son las nóminas originales. El trabajador debe verificar cada cifra de este informe
+    contra ellas antes de presentarlo ante cualquier persona u organismo. Para una valoración del caso, dirigirse a
+    un sindicato, a la SNCU, al Juridisch Loket o a un profesional del derecho.</p>
+  </div>`);
+
+  H.push(`<div class="pie">
+    <span>holandafacil.com · comprobador de nóminas</span>
+    <span>Generado en el dispositivo del trabajador. No contiene nombre, BSN ni IBAN.</span>
+    <span>${esc(c.generadoEl)}</span>
+  </div>`);
+
+  document.getElementById('hoja').innerHTML = H.join('');
+
+  const b = document.getElementById('banner-demo');
+  if(c.demo){ b.innerHTML = `<b>Datos de demostración</b>${esc(c.demoNota)}`; }
+  else { b.remove(); }
+}
+render();
+</script>
