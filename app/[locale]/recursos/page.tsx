@@ -142,6 +142,35 @@ export default function RecursosPage({
       </div>
 
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '40px 24px 80px', display: 'flex', flexDirection: 'column', gap: 40 }}>
+        {locale === 'es' && (
+          <Link
+            href={`/${locale}/recursos/comprobador-nominas`}
+            style={{
+              background: 'linear-gradient(135deg, #1a1a24, #111118)',
+              border: '1px solid #2dd4bf',
+              borderRadius: 16,
+              padding: '22px 24px',
+              textDecoration: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 16,
+              flexWrap: 'wrap',
+            }}
+          >
+            <div>
+              <p style={{ color: '#2dd4bf', fontSize: '0.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 6 }}>
+                Herramienta propia · gratis
+              </p>
+              <h2 style={{ color: '#fff', fontSize: '1.1rem', fontWeight: 800, margin: '0 0 6px' }}>Comprobador de nóminas</h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.5, margin: 0, maxWidth: 480 }}>
+                Suelta tus loonstroken y cotéjalas semana a semana con el salario mínimo, el vakantiegeld y el tope de vivienda del CAO. Se procesa en tu móvil — nunca se sube a ningún sitio.
+              </p>
+            </div>
+            <span style={{ color: '#2dd4bf', fontWeight: 700, fontSize: '0.85rem', whiteSpace: 'nowrap' }}>Abrir →</span>
+          </Link>
+        )}
+
         {CATEGORIES.map((cat) => (
           <div key={cat.title}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
